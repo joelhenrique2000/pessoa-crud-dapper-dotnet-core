@@ -1,0 +1,20 @@
+﻿@model pessoa_crud.Models.Pessoa
+@{ 
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Pessoa cadastrada com sucesso</title>
+    <link rel="stylesheet" href="/lib/bootstrap/dist/css/bootstrap.min.css" />
+</head>
+    <body class="text-center">
+        <div>
+            <h1>@Model.Nome foi cadastrado no sistema</h1>
+        </div>
+        Veja o novo cadastro na <a asp-action="Index">Página inicial</a>
+</body>
+</html>
