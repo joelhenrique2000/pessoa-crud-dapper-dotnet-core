@@ -1,4 +1,4 @@
-﻿@model IEnumerable<pessoa_crud.Models.Pessoa>
+﻿@model pessoa_crud.ViewModel.PessoaIndexViewModel
 @{
     Layout = null;
 }
@@ -25,15 +25,15 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach (pessoa_crud.Models.Pessoa r in Model) {
-                    <tr>
-                        <td>@r.Nome</td>
-                        <td>@r.Sobrenome</td>
-                        <td>@r.Telefone</td>
-                        <td>@r.Email</td>
-                        <td><a class="btn btn-primary" asp-route-id="@r.Codigo" asp-action="Editar">Editar</a></td>
-                        <td><a class="btn btn-primary" asp-route-id="@r.Codigo" asp-action="Remover">Deletar</a></td>
-                    </tr>
+                    @foreach (pessoa_crud.Models.Pessoa r in Model.pessoas) {
+                        <tr>
+                            <td>@r.Nome</td>
+                            <td>@r.Sobrenome</td>
+                            <td>@r.Telefone</td>
+                            <td>@r.Email</td>
+                            <td><a class="btn btn-primary" asp-route-id="@r.Codigo" asp-action="Editar">Editar</a></td>
+                            <td><a class="btn btn-primary" asp-route-id="@r.Codigo" asp-action="Remover">Deletar</a></td>
+                        </tr>
                     }
                 </tbody>
             </table>

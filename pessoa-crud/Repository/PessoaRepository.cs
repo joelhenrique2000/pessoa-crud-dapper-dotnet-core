@@ -107,8 +107,8 @@ namespace pessoa_crud.Repository
                 {
                     con.Open();
                     var query = "DELETE FROM PESSOA" +
-                                "WHERE Codigo =" + id;
-                    count = con.Execute(query);
+                                " WHERE Codigo = " + id;
+                    con.Execute(query);
                 }
                 catch (Exception ex)
                 {

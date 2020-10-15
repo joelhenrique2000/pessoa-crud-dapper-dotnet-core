@@ -2,6 +2,7 @@
 using Microsoft.Extensions.Logging;
 using pessoa_crud.Business;
 using pessoa_crud.Models;
+using pessoa_crud.ViewModel;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -22,8 +23,13 @@ namespace pessoa_crud.Controllers
         public IActionResult Index()
         {
             PessoaBusiness business = new PessoaBusiness();
+            var listaPessoas = business.GetAll();
 
-            return View(business.GetAll());
+            var viewModel = new PessoaIndexViewModel {
+                pessoas = listaPessoas
+            };
+
+            return View(viewModel);
         }
 
         [HttpGet]
@@ -38,9 +44,16 @@ namespace pessoa_crud.Controllers
             if (ModelState.IsValid)
             {
                 PessoaBusiness business = new PessoaBusiness();
-                business.Create(pessoa);
+                var pessoaCriada = business.Create(pessoa);
 
-                return View("CadastradoSucesso", pessoa);
+                var viewModel = new PessoaCriarViewModel {
+                    Email = pessoa.Email,
+                    Nome = pessoa.Nome,
+                    Sobrenome = pessoa.Sobrenome,
+                    Telefone = pessoa.Telefone
+                };
+
+                return View("CadastradoSucesso", viewModel);
             }
             else
             {
@@ -50,6 +63,7 @@ namespace pessoa_crud.Controllers
 
         public IActionResult Remover(int id)
         {
+            Console.WriteLine(id);
             PessoaBusiness business = new PessoaBusiness();
             business.Remove(id);
 
