@@ -76,7 +76,15 @@ namespace pessoa_crud.Controllers
             PessoaBusiness business = new PessoaBusiness();
             Pessoa pessoa = business.GetById(id);
 
-            return View(pessoa);
+            var viewModel = new PessoaEditarViewModel {
+                Codigo = pessoa.Codigo,
+                Email = pessoa.Email,
+                Nome = pessoa.Nome,
+                Sobrenome = pessoa.Sobrenome,
+                Telefone = pessoa.Telefone
+            };
+
+            return View("Editar", viewModel);
         }
 
         [HttpPost]
