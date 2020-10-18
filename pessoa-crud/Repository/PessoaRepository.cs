@@ -13,11 +13,12 @@ namespace pessoa_crud.Repository
     public class PessoaRepository : IRepository<Pessoa>
     {
 
+        private readonly IDbConnection _dbConnection;
         private readonly string _connectionString;
 
         public PessoaRepository()
         {
-            _connectionString = "Server=localhost\\SQLEXPRESS; Database = ESTUDO1; Trusted_Connection = true";
+            _connectionString = "Server=localhost\\SQLEXPRESS; Database = ESTUDO3; Trusted_Connection = true";
         }
         public IEnumerable<Pessoa> GetAll()
         {
