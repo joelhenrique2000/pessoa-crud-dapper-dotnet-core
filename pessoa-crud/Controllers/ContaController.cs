@@ -11,6 +11,7 @@ namespace pessoa_crud.Controllers {
     public class ContaController : Controller {
 
         private UserManager<ApplicationUser> _userManager;
+        private SignInManager<ApplicationUser> _signInManager;
 
         public ContaController(UserManager<ApplicationUser> userManager) {
             _userManager = userManager;
