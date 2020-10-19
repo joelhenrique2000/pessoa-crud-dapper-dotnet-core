@@ -8,12 +8,12 @@ using System.Linq;
 using System.Threading.Tasks;
 
 namespace pessoa_crud.Controllers {
-    public class ContaController : Controller {
+    public class AccountController : Controller {
 
         private UserManager<ApplicationUser> _userManager;
         private SignInManager<ApplicationUser> _signInManager;
 
-        public ContaController(UserManager<ApplicationUser> userManager,
+        public AccountController(UserManager<ApplicationUser> userManager,
             SignInManager<ApplicationUser> signInManager) {
             _userManager = userManager;
             this._signInManager = signInManager;
@@ -24,16 +24,18 @@ namespace pessoa_crud.Controllers {
         }
 
         [HttpGet]
-        public IActionResult Entrar(string returnUrl) {
-            if(Url.IsLocalUrl(returnUrl)) {
-                return Redirect(returnUrl);
-            } else {
+        public IActionResult Login(string returnUrl) {
+           // Console.WriteLine(returnUrl);
+           // if (Url.IsLocalUrl(returnUrl)) {
+           //     return Redirect(returnUrl);
+           // }
+           // else {
                 return View(new AccountLoginViewModel());
-            }
+            //}
         }
 
         [HttpPost]
-        public async Task<IActionResult> Entrar(AccountLoginViewModel model) {
+        public async Task<IActionResult> Login(AccountLoginViewModel model) {
             if (ModelState.IsValid) {
                 var result = await _signInManager.PasswordSignInAsync(
                     model.Email, model.Senha, false, false);
@@ -46,13 +48,13 @@ namespace pessoa_crud.Controllers {
         }
 
         [HttpGet]
-        public IActionResult Registrar() {
+        public IActionResult Register() {
             ViewBag.ErrorMessage = null;
             return View(new ContaRegistrarViewModel());
         }
 
         [HttpPost]
-        public async Task<IActionResult> Registrar(ContaRegistrarViewModel user) {
+        public async Task<IActionResult> Register(ContaRegistrarViewModel user) {
             if (ModelState.IsValid) {
                 var usuario = new ApplicationUser() {
                     UserName = user.Email,
@@ -73,54 +75,14 @@ namespace pessoa_crud.Controllers {
                 }
 
             }
-            
-             return View(user);
-            
+
+            return View(user);
+
         }
 
         public async Task<IActionResult> Logout() {
-            Console.WriteLine("asdasdasd");
             await _signInManager.SignOutAsync();
             return RedirectToAction("Index", "Pessoa");
         }
     }
 }
-
-/**
- try {
-                if (string.IsNullOrEmpty(user.Email))
-                   throw new Exception("The username cannot be empty!");
-                
-                if (string.IsNullOrEmpty(user.Senha))
-                    throw new Exception("The password cannot be empty!");
-
-                if (user.Senha != user.ConfirmarSenha)
-                    throw new Exception("The Passwords do not match!");
-
-                var theUser = new ApplicationUser() {
-                    UserName = user.Email,
-                    Email = user.Email
-                };
-
-                var result = await _userManager.CreateAsync(theUser, user.Senha);
-                Console.WriteLine(result.Succeeded);
-
-                if (result.Succeeded)
-                {
-                    await _signInManager.SignInAsync(theUser, isPersistent: false);
-                    Console.WriteLine("AAAAAAAAAAAAAA");
-                    return RedirectToAction("Index");
-                } else {
-                    Console.WriteLine("BBBBBBBBBBBB");
-                    return View(user);
-                }
-
-                
-                // 
-            }
-            catch (Exception ex) {
-                return View(user);
-            }
-        
-        
- */

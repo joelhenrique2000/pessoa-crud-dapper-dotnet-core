@@ -4,9 +4,8 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace pessoa_crud.ViewModel
-{
-    public class ContaEntrarViewModel
+namespace pessoa_crud.ViewModel {
+    public class AccountLoginViewModel
     {
         [DataType(DataType.Password)]
         [Required(ErrorMessage = "A senha é obrigatório")]
