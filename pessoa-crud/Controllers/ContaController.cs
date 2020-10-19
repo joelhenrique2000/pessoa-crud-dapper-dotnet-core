@@ -56,6 +56,11 @@ namespace pessoa_crud.Controllers {
             
         }
 
+        public async Task<IActionResult> Logout() {
+            Console.WriteLine("asdasdasd");
+            await _signInManager.SignOutAsync();
+            return RedirectToAction("Index", "Pessoa");
+        }
     }
 }
 
