@@ -24,6 +24,11 @@ namespace pessoa_crud.Controllers {
         }
 
         [HttpGet]
+        public IActionResult Entrar() {
+            return View(new ContaEntrarViewModel());
+        }
+
+        [HttpGet]
         public IActionResult Registrar() {
             ViewBag.ErrorMessage = null;
             return View(new ContaRegistrarViewModel());
