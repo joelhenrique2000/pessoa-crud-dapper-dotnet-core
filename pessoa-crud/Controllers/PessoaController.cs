@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using pessoa_crud.Business;
 using pessoa_crud.Models;
@@ -11,6 +12,7 @@ using System.Threading.Tasks;
 
 namespace pessoa_crud.Controllers
 {
+    [Authorize]
     public class PessoaController : Controller
     {
         private readonly ILogger<PessoaController> _logger;
