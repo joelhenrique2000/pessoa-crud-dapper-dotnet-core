@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using pessoa_crud.Identity;
 using pessoa_crud.Models;
 
 namespace pessoa_crud {
@@ -21,13 +22,20 @@ namespace pessoa_crud {
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services) {
-            services.AddControllersWithViews();
-            services.AddRazorPages();
-            //services.AddIdentity<ApplicationUser, ApplicationUserRole>()
+            // services.AddControllersWithViews();
+            // services.AddIdentity<ApplicationUser, ApplicationUserRole>()
             //   .AddUserStore<CustomRoleStore>()
             //   .AddRoleStore<CustomRoleStore>()
             //   .AddDefaultTokenProviders();
 
+            services.AddIdentity<ApplicationUser, ApplicationUserRole>()
+                    .AddUserStore<CustomUserStore>()
+                    .AddRoleStore<CustomRoleStore>()
+                    .AddDefaultTokenProviders();
+
+            services.AddTransient<IDbConnection, DbConnection>();
+
+            services.AddControllersWithViews();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -52,7 +60,6 @@ namespace pessoa_crud {
                 endpoints.MapControllerRoute(
                     name: "default",
                     pattern: "{controller=Pessoa}/{action=Index}/{id?}");
-                endpoints.MapRazorPages();
             });
         }
     }
