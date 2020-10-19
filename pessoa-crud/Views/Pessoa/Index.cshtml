@@ -1,4 +1,6 @@
-﻿@model pessoa_crud.ViewModel.PessoaIndexViewModel
+﻿@using Microsoft.AspNetCore.Identity
+@inject Microsoft.AspNetCore.Identity.SignInManager<ApplicationUser> SignInManager
+@model pessoa_crud.ViewModel.PessoaIndexViewModel
 @{
     Layout = null;
 }
@@ -13,6 +15,11 @@
 <body>
     <div class="text-center">
         <div class="text-center p-2">
+            @if (SignInManager.IsSignedIn(User)) {
+                <button>Sair</button>
+            } else {
+                <button>registrar</button>
+            }
             <table class="table table-bordered table-striped table-sm">
                 <thead>
                     <tr>
