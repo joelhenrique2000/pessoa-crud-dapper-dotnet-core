@@ -13,8 +13,10 @@ namespace pessoa_crud.Controllers {
         private UserManager<ApplicationUser> _userManager;
         private SignInManager<ApplicationUser> _signInManager;
 
-        public ContaController(UserManager<ApplicationUser> userManager) {
+        public ContaController(UserManager<ApplicationUser> userManager,
+            SignInManager<ApplicationUser> signInManager) {
             _userManager = userManager;
+            this._signInManager = signInManager;
         }
 
         public IActionResult Index() {
@@ -29,13 +31,38 @@ namespace pessoa_crud.Controllers {
 
         [HttpPost]
         public async Task<IActionResult> Registrar(ContaRegistrarViewModel user) {
-            Console.WriteLine("OI");
-            try {
-                //if (string.IsNullOrEmpty(user.Username))
-                //   throw new Exception("The username cannot be empty!");
-                Console.WriteLine(user.Email);
-                Console.WriteLine(user.Senha);
-                Console.WriteLine(user.ConfirmarSenha);
+            if (ModelState.IsValid) {
+                var usuario = new ApplicationUser() {
+                    UserName = user.Email,
+                    Email = user.Email,
+                };
+
+                var result = await _userManager.CreateAsync(usuario, user.Senha);
+
+                if (result.Succeeded) {
+                    await _signInManager.SignInAsync(usuario, false);
+
+                    return RedirectToAction("Index", "Pessoa");
+                    // return View("CadastradoSucesso", viewModel);
+                }
+
+                foreach (var error in result.Errors) {
+                    ModelState.AddModelError(string.Empty, error.Description);
+                }
+
+            }
+            
+             return View(user);
+            
+        }
+
+    }
+}
+
+/**
+ try {
+                if (string.IsNullOrEmpty(user.Email))
+                   throw new Exception("The username cannot be empty!");
                 
                 if (string.IsNullOrEmpty(user.Senha))
                     throw new Exception("The password cannot be empty!");
@@ -48,14 +75,25 @@ namespace pessoa_crud.Controllers {
                     Email = user.Email
                 };
 
-                await _userManager.CreateAsync(theUser, user.Senha);
+                var result = await _userManager.CreateAsync(theUser, user.Senha);
+                Console.WriteLine(result.Succeeded);
 
-                return View(new ContaRegistrarViewModel());
+                if (result.Succeeded)
+                {
+                    await _signInManager.SignInAsync(theUser, isPersistent: false);
+                    Console.WriteLine("AAAAAAAAAAAAAA");
+                    return RedirectToAction("Index");
+                } else {
+                    Console.WriteLine("BBBBBBBBBBBB");
+                    return View(user);
+                }
+
+                
+                // 
             }
             catch (Exception ex) {
                 return View(user);
             }
-        }
-
-    }
-}
+        
+        
+ */
