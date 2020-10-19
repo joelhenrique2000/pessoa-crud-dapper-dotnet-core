@@ -28,6 +28,19 @@ namespace pessoa_crud.Controllers {
             return View(new ContaEntrarViewModel());
         }
 
+        [HttpPost]
+        public async Task<IActionResult> Entrar(ContaEntrarViewModel model) {
+            if (ModelState.IsValid) {
+                var result = await _signInManager.PasswordSignInAsync(
+                    model.Email, model.Senha, false, false);
+                if (result.Succeeded) {
+                    return RedirectToAction("Index", "Pessoa");
+                }
+                ModelState.AddModelError(string.Empty, "Login Inválido");
+            }
+            return View(model);
+        }
+
         [HttpGet]
         public IActionResult Registrar() {
             ViewBag.ErrorMessage = null;
