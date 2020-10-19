@@ -24,8 +24,12 @@ namespace pessoa_crud.Controllers {
         }
 
         [HttpGet]
-        public IActionResult Entrar() {
-            return View(new ContaEntrarViewModel());
+        public IActionResult Entrar(string returnUrl) {
+            if(Url.IsLocalUrl(returnUrl)) {
+                return Redirect(returnUrl);
+            } else {
+                return View(new ContaEntrarViewModel());
+            }
         }
 
         [HttpPost]
