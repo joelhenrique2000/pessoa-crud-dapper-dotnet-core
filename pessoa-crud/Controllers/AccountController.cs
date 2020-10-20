@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using pessoa_crud.Business;
 using pessoa_crud.Models;
 using pessoa_crud.ViewModel;
 using System;
@@ -10,13 +11,11 @@ using System.Threading.Tasks;
 namespace pessoa_crud.Controllers {
     public class AccountController : Controller {
 
-        private UserManager<ApplicationUser> _userManager;
-        private SignInManager<ApplicationUser> _signInManager;
+        private AccountBusiness _business;
 
         public AccountController(UserManager<ApplicationUser> userManager,
             SignInManager<ApplicationUser> signInManager) {
-            _userManager = userManager;
-            this._signInManager = signInManager;
+            _business = new AccountBusiness(userManager, signInManager);
         }
 
         public IActionResult Index() {
@@ -25,20 +24,13 @@ namespace pessoa_crud.Controllers {
 
         [HttpGet]
         public IActionResult Login(string returnUrl) {
-           // Console.WriteLine(returnUrl);
-           // if (Url.IsLocalUrl(returnUrl)) {
-           //     return Redirect(returnUrl);
-           // }
-           // else {
-                return View(new AccountLoginViewModel());
-            //}
+            return View(new AccountLoginViewModel());
         }
 
         [HttpPost]
         public async Task<IActionResult> Login(AccountLoginViewModel model) {
             if (ModelState.IsValid) {
-                var result = await _signInManager.PasswordSignInAsync(
-                    model.Email, model.Senha, false, false);
+                var result = await _business.Login(model);
                 if (result.Succeeded) {
                     return RedirectToAction("Index", "Pessoa");
                 }
@@ -61,13 +53,11 @@ namespace pessoa_crud.Controllers {
                     Email = user.Email,
                 };
 
-                var result = await _userManager.CreateAsync(usuario, user.Senha);
+                var result = await _business.Register(usuario, user.Senha);
 
                 if (result.Succeeded) {
-                    await _signInManager.SignInAsync(usuario, false);
-
+                    await _business.SignIn(usuario);
                     return RedirectToAction("Index", "Pessoa");
-                    // return View("CadastradoSucesso", viewModel);
                 }
 
                 foreach (var error in result.Errors) {
@@ -81,7 +71,7 @@ namespace pessoa_crud.Controllers {
         }
 
         public async Task<IActionResult> Logout() {
-            await _signInManager.SignOutAsync();
+            await _business.SignOut();
             return RedirectToAction("Index", "Pessoa");
         }
     }

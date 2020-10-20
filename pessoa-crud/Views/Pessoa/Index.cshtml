@@ -17,7 +17,7 @@
         <div class="text-center p-2">
             @if (SignInManager.IsSignedIn(User)) {
                 <button>Sair</button>
-                <a class="btn btn-primary" asp-controller="Conta" asp-action="Logout">Sair</a>
+                <a class="btn btn-primary" asp-controller="Account" asp-action="Logout">Sair</a>
             }
             else {
                 <button>registrar</button>
