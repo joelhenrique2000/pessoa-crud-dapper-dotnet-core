@@ -29,17 +29,20 @@ namespace pessoa_crud.Business
 
         public int Create(Pessoa obj)
         {
-            return pessoaRepository.Criar(obj);
+            pessoaRepository.Criar(obj);
+            return 1;
         }
 
         public int Update(Pessoa obj)
         {
-            return pessoaRepository.Atualizar(obj);
+            pessoaRepository.Atualizar(obj);
+            return 1;
         }
 
         public int Remove(int id)
         {
-            return pessoaRepository.Remover(id);
+            pessoaRepository.Remover(id);
+            return 1;
         }
 
     }

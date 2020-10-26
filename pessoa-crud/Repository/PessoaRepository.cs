@@ -2,6 +2,9 @@
 using Microsoft.AspNetCore.Mvc;
 using pessoa_crud.Models;
 using pessoa_crud.Repository.Interfaces;
+using pessoa_crud.ViewModel;
+using RepositoryHelpers.DataBase;
+using RepositoryHelpers.DataBaseRepository;
 using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
@@ -11,143 +14,46 @@ using System.Threading.Tasks;
 namespace pessoa_crud.Repository
 {
     public class PessoaRepository : IRepository<Pessoa>
-    {
+    { 
 
-        private readonly IDbConnection _dbConnection;
-        private readonly string _connectionString;
-
+        private readonly CustomRepository<Pessoa> Repository;
+         
         public PessoaRepository()
         {
-            _connectionString = "Server=localhost\\SQLEXPRESS; Database = ESTUDO3; Trusted_Connection = true";
+            var connection = new Connection()
+            {
+                Database = RepositoryHelpers.Utils.DataBaseType.SqlServer, //RepositoryHelpers.Utils.DataBaseType.Oracle
+                ConnectionString = "Server=localhost\\SQLEXPRESS; Database = CRUD; Trusted_Connection = true"
+            };
+
+            Repository = new CustomRepository<Pessoa>(connection);
         }
         public IEnumerable<Pessoa> GetAll()
         {
-            List<Pessoa> pessoas = new List<Pessoa>();
-
-            using (var con = new SqlConnection(_connectionString))
-            {
-                try
-                {
-                    con.Open();
-                    var query = "SELECT * FROM PESSOA";
-                    pessoas = con.Query<Pessoa>(query).ToList();
-                }
-                catch (Exception ex)
-                {
-                    throw ex;
-                }
-                finally
-                {
-                    con.Close();
-                }
-            }
-
-            return pessoas;
+            var query = "SELECT * FROM PESSOA";
+            
+            return Repository.Get(query).ToList();
         }
 
         public Pessoa GetById(int id)
         {
-            Pessoa pessoa = new Pessoa();
-
-            using (var con = new SqlConnection(_connectionString))
-            {
-                try
-                {
-                    con.Open();
-                    var query = "SELECT * FROM PESSOA " +
-                                "WHERE Codigo = " + id;
-                    pessoa = con.Query<Pessoa>(query).FirstOrDefault();
-                }
-                catch (Exception ex)
-                {
-                    throw ex;
-                }
-                finally
-                {
-                    con.Close();
-                }
-            }
-
-            return pessoa;
+            return Repository.GetById(id);
         }
 
-        public int Criar(Pessoa obj)
+        public void Criar(Pessoa obj)
         {
-            int count = 0;
-
-            using (var con = new SqlConnection(_connectionString))
-            {
-                try
-                {
-                    con.Open();
-                    var query = "INSERT INTO PESSOA (Nome, Sobrenome, Email, Telefone)" +
-                                "VALUES (@Nome, @Sobrenome, @Email, @Telefone);" +
-                                "SELECT CAST(SCOPE_IDENTITY() as INT);";
-                    count = con.Execute(query, obj);
-                }
-                catch (Exception ex)
-                {
-                    throw ex;
-                }
-                finally
-                {
-                    con.Close();
-                }
-            }
-
-            return count;
+            Repository.Insert(obj, true);
         }
 
-        public int Remover(int id)
+        public void Remover(int id)
         {
-            int count = 0;
-
-            using (var con = new SqlConnection(_connectionString))
-            {
-                try
-                {
-                    con.Open();
-                    var query = "DELETE FROM PESSOA" +
-                                " WHERE Codigo = " + id;
-                    con.Execute(query);
-                }
-                catch (Exception ex)
-                {
-                    throw ex;
-                }
-                finally
-                {
-                    con.Close();
-                }
-            }
-
-            return count;
+            Repository.Delete(id);
         }
 
-        public int Atualizar(Pessoa obj)
+        public void Atualizar(Pessoa obj)
         {
-            int count = 0;
-
-            using (var con = new SqlConnection(_connectionString))
-            {
-                try
-                {
-                    con.Open();
-                    var query = "UPDATE PESSOA SET Nome = @Nome, Sobrenome = @Sobrenome, Email = @Email, Telefone = @Telefone " +
-                                "WHERE Codigo = " + obj.Codigo;
-                    count = con.Execute(query, obj);
-                }
-                catch (Exception ex)
-                {
-                    throw ex;
-                }
-                finally
-                {
-                    con.Close();
-                }
-            }
-
-            return count;
+            Repository.Update(obj);
         }
     }
 }
+ 

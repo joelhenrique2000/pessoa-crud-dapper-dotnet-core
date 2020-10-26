@@ -46,7 +46,7 @@ namespace pessoa_crud.Controllers
             if (ModelState.IsValid)
             {
                 PessoaBusiness business = new PessoaBusiness();
-                var pessoaCriada = business.Create(pessoa);
+                business.Create(pessoa);
 
                 var viewModel = new PessoaCriarViewModel {
                     Email = pessoa.Email,

@@ -4,8 +4,10 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace pessoa_crud.ViewModel {
-    public class PessoaEditarViewModel {
+namespace pessoa_crud.ViewModel
+{
+    public class PessoaEditarViewModel
+    {
 
         public long Codigo { get; set; }
 

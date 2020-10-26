@@ -1,4 +1,5 @@
-﻿using System;
+﻿using RepositoryHelpers;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -6,9 +7,12 @@ using System.Threading.Tasks;
 
 namespace pessoa_crud.Models
 {
+    [Table("pessoa")]
     public class Pessoa
     {
 
+        [PrimaryKey]
+        [IdentityIgnore]
         public long Codigo { get; set; }
 
         [Required(ErrorMessage = "O nome é obrigatório")]

@@ -1,11 +1,14 @@
-﻿using System;
+﻿using Dapper.Contrib.Extensions;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 
 namespace pessoa_crud.ViewModel {
+
     public class PessoaCriarViewModel {
+
         [Required(ErrorMessage = "O nome é obrigatório")]
         public string Nome { get; set; }
 

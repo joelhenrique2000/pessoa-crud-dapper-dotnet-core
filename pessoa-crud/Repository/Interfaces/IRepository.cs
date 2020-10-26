@@ -8,7 +8,10 @@ namespace pessoa_crud.Repository.Interfaces
 {
     public interface IRepository<T>
     {
-        public IEnumerable<Pessoa> GetAll();
-        public int Criar(T obj);
+        public IEnumerable<T> GetAll();
+        public void Criar(T item);
+        public T GetById(int id);
+        public void Remover(int id);
+        public void Atualizar(T item);
     }
 }
